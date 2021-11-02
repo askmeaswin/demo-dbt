@@ -1,0 +1,18 @@
+version: 2
+
+models:
+    - name: example_team_details
+      description: >
+        A list of a few cricket teams that made playoffs in 2021
+
+      columns:
+        - name: Team
+          description: '{{ doc("table_events") }}'
+
+        - name: City
+          description: "The home city of the team"
+          tests:
+            - is_la_team
+
+        - name: State
+          description: "The home state of the team"

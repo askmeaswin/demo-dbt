@@ -6,6 +6,9 @@ name: 'demo_dbt'
 version: '1.0.0'
 config-version: 2
 
+vars:
+    current_winner: 76ers
+
 # This setting configures which "profile" dbt uses for this project.
 profile: 'my-snowflake-db'
 
@@ -27,12 +30,19 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
+#on-run-start: "insert into demo_db.public.dbt_audits (audit_type) values('run_start'); commit;"
+on-run-start: "insert_audita('run_start')"
+on-run-end: "insert into demo_db.public.dbt_audits (audit_type) values('run_end'); commit;"
+
 
 # In this example config, we tell dbt to build all models in the example/ directory
 # as tables. These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
 models:
+  pre-hook: "insert into demo_db.public.dbt_audits (audit_type) values('model_start'); commit;"
+  post-hook: "insert into demo_db.public.dbt_audits (audit_type) values('model_end'); commit;"
   demo_dbt:
     # Config indicated by + and applies to all files under models/example/
     example:
       +materialized: view
+      +schema: staging
