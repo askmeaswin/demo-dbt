@@ -1,21 +1,23 @@
 with teams as (
-    select * from {{ref('example_teams')}}
+
+    select * from {{ ref('example_teams') }}
 ),
 
 team_locations as (
-    select * from {{ref('team_locations')}}   
+
+    select * from {{ ref('team_location') }}   
 ),
 
 final as (
     select teams.team,
-    trim(team_locations.city) as city,
-    trim(team_locations.state) as state,
+    trim(team_location.city) as city,
+    trim(team_location.state) as state,
     teams.team = '{{ var("current_winner") }}' as is_champion
 
     from teams
 
-    left join team_locations
-    on team_locations.name = teams.team
+    left join team_location
+    on team_location.name = teams.team
 )
 
 select * from final

@@ -1,3 +1,3 @@
 with teams as (
-    select * from ref{{ref('team_locations')}}
+    select * from {{ ref('team_location') }};
 )

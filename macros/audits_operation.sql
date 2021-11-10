@@ -1,4 +1,4 @@
-{% macro insert_audita(action_name) -%}
+{% macro insert_audits(action_name) -%}
 
 insert into demo_db.public.dbt_audits (audit_type)
 
